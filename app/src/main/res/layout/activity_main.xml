@@ -10,7 +10,7 @@
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="这是youuuuu问题的文案!"
+        android:text="这是没mmmmmmm问题的文案!!! -> 补丁包2"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
