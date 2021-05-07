@@ -1,0 +1,75 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.example.tinkerdemo"
+        minSdkVersion 19
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        multiDexEnabled true // 启用MultiDex
+        multiDexKeepProguard file("tinker_multidexkeep.pro")// tinker 配置项，用于确认哪些类必须在主dex
+
+        manifestPlaceholders = [TINKER_VERSION: "${rootProject.ext.VERSION_NAME}"]
+
+        buildConfigField "String", "TINKER_VERSION", "\"${rootProject.ext.VERSION_NAME}\""
+        buildConfigField "String", "MESSAGE", "\"I am the base apk\""
+        buildConfigField "String", "TINKER_ID", "\"${getTinkerIdValue()}\""
+        buildConfigField "String", "PLATFORM", "\"all\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true // 设置是否执行代码缩减（混淆）
+            zipAlignEnabled true //设置是否对APK包执行ZIP对齐优化
+            shrinkResources true //资源缩减器可以识别应用程序仍在使用哪些资源，未被使用的资源，将会被资源缩减器移除
+            debuggable true //设置生成的APK是否支持调试本地代码
+            /* 混淆规则配置文件 */
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            debuggable true
+            /* 混淆规则配置文件 */
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+def getTinkerIdValue() {
+    return hasProperty("TINKER_ID") ? TINKER_ID : "1.0"
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    implementation "androidx.multidex:multidex:2.0.1"
+
+    // tinker的核心库
+    implementation("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") { changing = true }
+    // 可选，用于生成application类。我们这里使用是非gradle方法打拆分包，所以用不到anno库，先注释掉。
+    annotationProcessor("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
+    compileOnly("com.tencent.tinker:tinker-android-anno-support:${TINKER_VERSION}") { changing = true }
+
+}
