@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         findViewById<View>(R.id.btn).setOnClickListener(this)
+//        findViewById<TextView>(R.id.tv_content).text = "这是有问题的文案"
+        findViewById<TextView>(R.id.tv_content).text = "已通过java修复-这是没问题的文案"
         findViewById<View>(R.id.showInfo).setOnClickListener {
             showInfo(it.context)
         }
