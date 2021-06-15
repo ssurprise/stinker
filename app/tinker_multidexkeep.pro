@@ -21,6 +21,9 @@
 -keep public class com.tencent.tinker.loader.NewClassLoaderInjector {
     *;
 }
+-keep class com.tencent.tinker.loader.shareutil.TinkerLogInlineFence {
+    *;
+}
 
 -keep class com.tencent.tinker.loader.NewClassLoaderInjector$DispatchClassLoader {
     *;
@@ -31,6 +34,10 @@
 }
 
 -keep class com.tencent.tinker.loader.app.TinkerInlineFenceAction {
+    *;
+}
+
+-keep class com.tencent.tinker.loader.** {
     *;
 }
 
